@@ -100,36 +100,50 @@ texture_filter = 1
 position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
-[node name="Player" type="Node2D" parent="."]
+[node name="PlayerUnits" type="Node" parent="."]
+
+[node name="Player" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
 position = Vector2(399, 307)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
+max_health = 15
+current_health = 15
+attack = 7
+defense = 6
+speed = 8
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Player"]
 texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("5_k571d")
 
-[node name="Player2" type="Node2D" parent="."]
+[node name="Player2" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
 position = Vector2(266, 215)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
+max_health = 15
+current_health = 15
+attack = 5
+defense = 5
+speed = 5
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Player2"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Player2"]
 texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("5_k571d")
 flip_h = true
 
-[node name="Enemy" type="Node2D" parent="."]
+[node name="EnemyUnits" type="Node" parent="."]
+
+[node name="Enemy" type="Node2D" parent="EnemyUnits" groups=["enemy_unit"]]
 position = Vector2(753, 239)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+[node name="Sprite2D" type="Sprite2D" parent="EnemyUnits/Enemy"]
 texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("5_k571d")
