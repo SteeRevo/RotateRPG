@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bx3skhrvmrlan"]
+[gd_scene load_steps=10 format=3 uid="uid://bx3skhrvmrlan"]
 
 [ext_resource type="Script" path="res://battle_scene.gd" id="1_orsv8"]
 [ext_resource type="Script" path="res://BattleGround/BattleGround.gd" id="2_ojhbn"]
 [ext_resource type="Script" path="res://Unit.gd" id="3_4jtox"]
 [ext_resource type="Texture2D" uid="uid://cx2c44505uroh" path="res://BattleGround/BattleGround_sprite.png" id="3_12gtb"]
 [ext_resource type="Texture2D" uid="uid://dkhk6udast3f4" path="res://Sanazaki_Battle/Sanazaki_sprite.png" id="5_k571d"]
+[ext_resource type="Texture2D" uid="uid://bqb6cugqwr4bu" path="res://Leo_battle/Leo_Sprite.png" id="6_8yjee"]
+[ext_resource type="Script" path="res://BattleUI.gd" id="7_i3a86"]
+[ext_resource type="Texture2D" uid="uid://ld7gi6wo7a3d" path="res://icon.svg" id="8_7d4j3"]
+[ext_resource type="Script" path="res://Selector.gd" id="9_80aju"]
 
 [node name="BattleScene" type="Node2D"]
 script = ExtResource("1_orsv8")
@@ -132,8 +136,7 @@ metadata/_edit_group_ = true
 [node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Player2"]
 texture_filter = 1
 position = Vector2(0, -25)
-texture = ExtResource("5_k571d")
-flip_h = true
+texture = ExtResource("6_8yjee")
 
 [node name="EnemyUnits" type="Node" parent="."]
 
@@ -141,6 +144,7 @@ flip_h = true
 position = Vector2(753, 239)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
+attack = 5
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="EnemyUnits/Enemy"]
@@ -154,30 +158,37 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("7_i3a86")
 
 [node name="Rotate" type="Button" parent="BattleUI"]
-layout_mode = 0
-offset_left = 227.0
-offset_top = 284.0
-offset_right = 336.0
-offset_bottom = 315.0
+layout_mode = 2
+offset_left = 182.0
+offset_top = 289.0
+offset_right = 325.0
+offset_bottom = 320.0
 text = "Rotate"
 
-[node name="Attack" type="Button" parent="BattleUI"]
-layout_mode = 0
-offset_left = 469.0
-offset_top = 279.0
-offset_right = 575.0
-offset_bottom = 310.0
-text = "Attack"
-
 [node name="Skill" type="Button" parent="BattleUI"]
-layout_mode = 0
-offset_left = 347.0
+layout_mode = 2
+offset_left = 349.0
 offset_top = 215.0
-offset_right = 453.0
+offset_right = 494.0
 offset_bottom = 246.0
 text = "Skill"
+
+[node name="Attack" type="Button" parent="BattleUI"]
+layout_mode = 2
+offset_left = 504.0
+offset_top = 288.0
+offset_right = 647.0
+offset_bottom = 320.0
+text = "Attack"
+
+[node name="Selector" type="Sprite2D" parent="BattleUI"]
+position = Vector2(482, 305)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_7d4j3")
+script = ExtResource("9_80aju")
 
 [connection signal="pressed" from="BattleUI/Rotate" to="." method="_on_rotate_pressed"]
 [connection signal="pressed" from="BattleUI/Attack" to="." method="_on_attack_pressed"]
