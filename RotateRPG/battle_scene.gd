@@ -12,12 +12,13 @@ enum BATTLE_STATE {BASE, ATTACK_SELECT, SKILL_MENU, SKILL_SELECT, ROTATE_SELECT,
 @onready var playerBGBotWing = $BattleGroundSet/BattleGround3
 @onready var playerBGBack = $BattleGroundSet/BattleGround4
 
-@onready var enemyBGFront = $BattleGroundSet2/BattleGround
+@onready var enemyBGFront = $BattleGroundSet2/BattleGround1
 @onready var enemyBGTopWing = $BattleGroundSet2/BattleGround2
 @onready var enemyBGBotWing = $BattleGroundSet2/BattleGround3
 @onready var enemyBGBotBack = $BattleGroundSet2/BattleGround4
 
 var current_unit
+var battleState = BATTLE_STATE.BASE
 
 var unit_list = []
 var player_units = []
@@ -31,14 +32,15 @@ func _ready():
 	playerBGTopWing.set_current_unit($PlayerUnits/Player2)
 	enemyBGFront.set_current_unit($EnemyUnits/Enemy)
 	
+	$PlayerUnits/Player._set_BG(playerBGFront)
+	$PlayerUnits/Player2._set_BG(playerBGTopWing)
+	$EnemyUnits/Enemy._set_BG(enemyBGFront)
+	
+	battleState = BATTLE_STATE.BASE
+	
 	get_all_units()
 	
-	var max_speed = 0
-	print($PlayerUnits/Player.speed)
-	for unit in unit_list:
-		if unit.get_speed() > max_speed:
-			max_speed = unit.get_speed()
-			current_unit = unit
+	set_current_unit()
 	
 	print(current_unit)
 	print("Press D to attack, A to rotate, W for Skill, S for item.")
@@ -64,8 +66,19 @@ func get_all_units():
 	#print(unit_list)
 	print_current_status()
 	
+func set_current_unit():
+	var max_speed = 0
+	print($PlayerUnits/Player.speed)
+	for unit in unit_list:
+		if unit.get_speed() > max_speed:
+			max_speed = unit.get_speed()
+			current_unit = unit
+	
 func _input(event):
-	pass
+	if event.is_action_pressed("Attack") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
+		_on_attack_pressed()
+	if event.is_action_pressed("Rotate") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
+		_on_rotate_pressed()
 	
 func print_current_status():
 	if playerBGFront.get_current_unit():
@@ -79,7 +92,8 @@ func print_current_status():
 
 func _on_player_turn_started():
 	print("player turn")
-	#await 
+	battleState == BATTLE_STATE.BASE
+	
 	
 func get_user_input():
 	pass
@@ -91,13 +105,18 @@ func _on_enemy_turn_started():
 
 
 func _on_attack_pressed():
+	print("Player attack")
+	current_unit.attack_unit(enemy_units[0])
 	turnManager.turn = TurnManager.ENEMY_TURN
+	
 
 
 func _on_rotate_pressed():
-	rotate_units(current_unit, $PlayerUnits/Player2, playerBGFront, playerBGTopWing)
+	rotate_units(current_unit, $PlayerUnits/Player2, current_unit._get_BG(), $PlayerUnits/Player2._get_BG())
 	turnManager.turn = TurnManager.ENEMY_TURN
 
 func rotate_units(unit1, unit2, bg1, bg2):
 	unit1.move_towards(bg2.global_position)
+	unit1._set_BG(bg2)
 	unit2.move_towards(bg1.global_position)
+	unit2._set_BG(bg1)

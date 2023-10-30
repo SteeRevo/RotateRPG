@@ -1,7 +1,7 @@
 extends Node2D
 
 var player_
-var currentBattleGround
+var currentBattleGround : set = _set_BG, get = _get_BG
 
 @export var max_health = 1 : set = _set_health, get = _get_health
 @export var current_health = 1
@@ -31,3 +31,9 @@ func _get_health():
 
 func get_speed():
 	return speed
+	
+func _set_BG(BG):
+	currentBattleGround = BG
+	
+func _get_BG():
+	return currentBattleGround

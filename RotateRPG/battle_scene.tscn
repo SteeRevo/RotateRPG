@@ -39,7 +39,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround3" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(-141, 2)
+position = Vector2(13, 110)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -50,7 +50,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround4" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(13, 110)
+position = Vector2(-141, 2)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -63,13 +63,13 @@ texture = ExtResource("3_12gtb")
 [node name="BattleGroundSet2" type="Node2D" parent="."]
 position = Vector2(889, 307)
 
-[node name="BattleGround" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(159, 7)
+[node name="BattleGround1" type="Node2D" parent="BattleGroundSet2"]
+position = Vector2(-141, 2)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="BattleGroundSet2/BattleGround"]
+[node name="Sprite2D" type="Sprite2D" parent="BattleGroundSet2/BattleGround1"]
 texture_filter = 1
 position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
@@ -77,6 +77,7 @@ texture = ExtResource("3_12gtb")
 [node name="BattleGround2" type="Node2D" parent="BattleGroundSet2"]
 position = Vector2(17, -85)
 scale = Vector2(0.75, 0.75)
+script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="BattleGroundSet2/BattleGround2"]
@@ -85,8 +86,9 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround3" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(-141, 2)
+position = Vector2(13, 110)
 scale = Vector2(0.75, 0.75)
+script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="BattleGroundSet2/BattleGround3"]
@@ -95,8 +97,9 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround4" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(13, 110)
+position = Vector2(159, 7)
 scale = Vector2(0.75, 0.75)
+script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="BattleGroundSet2/BattleGround4"]
@@ -144,6 +147,8 @@ texture = ExtResource("6_8yjee")
 position = Vector2(753, 239)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
+max_health = 10
+current_health = 10
 attack = 5
 metadata/_edit_group_ = true
 
