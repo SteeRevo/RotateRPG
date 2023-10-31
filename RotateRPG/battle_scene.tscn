@@ -158,6 +158,21 @@ position = Vector2(0, -25)
 texture = ExtResource("5_k571d")
 flip_h = true
 
+[node name="Enemy2" type="Node2D" parent="EnemyUnits" groups=["enemy_unit"]]
+position = Vector2(910, 202)
+scale = Vector2(0.75, 0.75)
+script = ExtResource("3_4jtox")
+max_health = 10
+current_health = 10
+attack = 5
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyUnits/Enemy2"]
+texture_filter = 1
+position = Vector2(0, -25)
+texture = ExtResource("6_8yjee")
+flip_h = true
+
 [node name="BattleUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0

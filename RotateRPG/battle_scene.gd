@@ -15,7 +15,7 @@ enum BATTLE_STATE {BASE, ATTACK_SELECT, SKILL_MENU, SKILL_SELECT, ROTATE_SELECT,
 @onready var enemyBGFront = $BattleGroundSet2/BattleGround1
 @onready var enemyBGTopWing = $BattleGroundSet2/BattleGround2
 @onready var enemyBGBotWing = $BattleGroundSet2/BattleGround3
-@onready var enemyBGBotBack = $BattleGroundSet2/BattleGround4
+@onready var enemyBGBack = $BattleGroundSet2/BattleGround4
 
 var current_unit
 var battleState = BATTLE_STATE.BASE
@@ -23,18 +23,30 @@ var battleState = BATTLE_STATE.BASE
 var unit_list = []
 var player_units = []
 var enemy_units = []
+var is_reset = true
 
+
+signal enemy_selected
 
 
 
 func _ready():
-	playerBGFront.set_current_unit($PlayerUnits/Player)
-	playerBGTopWing.set_current_unit($PlayerUnits/Player2)
-	enemyBGFront.set_current_unit($EnemyUnits/Enemy)
+	playerBGFront._set_current_unit($PlayerUnits/Player)
+	playerBGTopWing._set_current_unit($PlayerUnits/Player2)
+	enemyBGFront._set_current_unit($EnemyUnits/Enemy)
+	enemyBGTopWing._set_current_unit($EnemyUnits/Enemy2)
+	
+	playerBGFront.set_current_unit_position()
+	playerBGTopWing.set_current_unit_position()
+	enemyBGFront.set_current_unit_position()
+	enemyBGTopWing.set_current_unit_position()
 	
 	$PlayerUnits/Player._set_BG(playerBGFront)
 	$PlayerUnits/Player2._set_BG(playerBGTopWing)
 	$EnemyUnits/Enemy._set_BG(enemyBGFront)
+	$EnemyUnits/Enemy2._set_BG(enemyBGTopWing)
+	
+	
 	
 	battleState = BATTLE_STATE.BASE
 	
@@ -76,23 +88,49 @@ func set_current_unit():
 	
 func _input(event):
 	if event.is_action_pressed("Attack") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
-		_on_attack_pressed()
+		if is_reset:
+			_on_attack_pressed()
+			is_reset = false
+		elif not is_reset:
+			is_reset = true
 	if event.is_action_pressed("Rotate") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
-		_on_rotate_pressed()
+		if is_reset:
+			_on_rotate_pressed()
+			is_reset = false
+		elif not is_reset:
+			is_reset = true
+		
+	if event.is_action_pressed("Attack") and battleState == BATTLE_STATE.ATTACK_SELECT and turnManager.turn == TurnManager.PLAYER_TURN:
+		if is_reset:
+			enemy_selected.emit()
+			is_reset = false
+		elif not is_reset:
+			is_reset = true
+	
+
+
 	
 func print_current_status():
-	if playerBGFront.get_current_unit():
-		print("Unit on BGFront: " + playerBGFront.get_current_unit().name)
-	if playerBGTopWing.get_current_unit():
-		print("Unit on BGTopWing: " + playerBGTopWing.get_current_unit().name)
-	if playerBGBotWing.get_current_unit():
-		print("Unit on BGBotWing: " + playerBGBotWing.get_current_unit().name)
-	if playerBGBack.get_current_unit():
-		print("Unit on BGBack: " + playerBGBack.get_current_unit().name)
+	if playerBGFront._get_current_unit():
+		print("Unit on BGFront: " + playerBGFront._get_current_unit().name)
+	if playerBGTopWing._get_current_unit():
+		print("Unit on BGTopWing: " + playerBGTopWing._get_current_unit().name)
+	if playerBGBotWing._get_current_unit():
+		print("Unit on BGBotWing: " + playerBGBotWing._get_current_unit().name)
+	if playerBGBack._get_current_unit():
+		print("Unit on BGBack: " + playerBGBack._get_current_unit().name)
+	if enemyBGFront._get_current_unit():
+		print("Unit on BGFront: " + enemyBGFront._get_current_unit().name)
+	if enemyBGTopWing._get_current_unit():
+		print("Unit on BGTopWing: " + enemyBGTopWing._get_current_unit().name)
+	if enemyBGBotWing._get_current_unit():
+		print("Unit on BGBotWing: " + enemyBGBotWing._get_current_unit().name)
+	if enemyBGBack._get_current_unit():
+		print("Unit on BGBack: " + enemyBGBack._get_current_unit().name)
 
 func _on_player_turn_started():
 	print("player turn")
-	battleState == BATTLE_STATE.BASE
+	battleState = BATTLE_STATE.BASE
 	
 	
 func get_user_input():
@@ -105,9 +143,14 @@ func _on_enemy_turn_started():
 
 
 func _on_attack_pressed():
-	print("Player attack")
+	print("Player selects unit to attack")
+	for unit in enemy_units:
+		print(unit.name)
+	battleState = BATTLE_STATE.ATTACK_SELECT
+	await enemy_selected
 	current_unit.attack_unit(enemy_units[0])
 	turnManager.turn = TurnManager.ENEMY_TURN
+	
 	
 
 
@@ -117,6 +160,10 @@ func _on_rotate_pressed():
 
 func rotate_units(unit1, unit2, bg1, bg2):
 	unit1.move_towards(bg2.global_position)
-	unit1._set_BG(bg2)
+	set_BG_unit_position(unit1, bg2)
 	unit2.move_towards(bg1.global_position)
-	unit2._set_BG(bg1)
+	set_BG_unit_position(unit2, bg1)
+	
+func set_BG_unit_position(unit, bg):
+	unit._set_BG(bg)
+	bg._set_current_unit(unit)
