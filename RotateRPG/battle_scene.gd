@@ -18,6 +18,7 @@ enum BATTLE_STATE {BASE, ATTACK_SELECT, SKILL_MENU, SKILL_SELECT, ROTATE_SELECT,
 @onready var enemyBGBack = $BattleGroundSet2/BattleGround4
 
 var current_unit
+var current_selected_enemy = 0
 var battleState = BATTLE_STATE.BASE
 
 var unit_list = []
@@ -31,20 +32,25 @@ signal enemy_selected
 
 
 func _ready():
-	playerBGFront._set_current_unit($PlayerUnits/Player)
-	playerBGTopWing._set_current_unit($PlayerUnits/Player2)
-	enemyBGFront._set_current_unit($EnemyUnits/Enemy)
-	enemyBGTopWing._set_current_unit($EnemyUnits/Enemy2)
+	#playerBGFront._set_current_unit($PlayerUnits/Player)
+	#playerBGTopWing._set_current_unit($PlayerUnits/Player2)
+	#enemyBGFront._set_current_unit($EnemyUnits/Enemy)
+	#enemyBGTopWing._set_current_unit($EnemyUnits/Enemy2)
+	
+	set_BG_unit_position($PlayerUnits/Player, playerBGFront)
+	set_BG_unit_position($PlayerUnits/Player2, playerBGTopWing)
+	set_BG_unit_position($EnemyUnits/Enemy, enemyBGFront)
+	set_BG_unit_position($EnemyUnits/Enemy2, enemyBGTopWing)
 	
 	playerBGFront.set_current_unit_position()
 	playerBGTopWing.set_current_unit_position()
 	enemyBGFront.set_current_unit_position()
 	enemyBGTopWing.set_current_unit_position()
 	
-	$PlayerUnits/Player._set_BG(playerBGFront)
-	$PlayerUnits/Player2._set_BG(playerBGTopWing)
-	$EnemyUnits/Enemy._set_BG(enemyBGFront)
-	$EnemyUnits/Enemy2._set_BG(enemyBGTopWing)
+	#$PlayerUnits/Player._set_BG(playerBGFront)
+	#$PlayerUnits/Player2._set_BG(playerBGTopWing)
+	#$EnemyUnits/Enemy._set_BG(enemyBGFront)
+	#$EnemyUnits/Enemy2._set_BG(enemyBGTopWing)
 	
 	
 	
@@ -54,8 +60,7 @@ func _ready():
 	
 	set_current_unit()
 	
-	print(current_unit)
-	print("Press D to attack, A to rotate, W for Skill, S for item.")
+	
 	
 	
 	turnManager.connect("player_turn_started", self._on_player_turn_started)
@@ -88,27 +93,27 @@ func set_current_unit():
 	
 func _input(event):
 	if event.is_action_pressed("Attack") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
-		if is_reset:
-			_on_attack_pressed()
-			is_reset = false
-		elif not is_reset:
-			is_reset = true
-	if event.is_action_pressed("Rotate") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
-		if is_reset:
-			_on_rotate_pressed()
-			is_reset = false
-		elif not is_reset:
-			is_reset = true
-		
-	if event.is_action_pressed("Attack") and battleState == BATTLE_STATE.ATTACK_SELECT and turnManager.turn == TurnManager.PLAYER_TURN:
-		if is_reset:
-			enemy_selected.emit()
-			is_reset = false
-		elif not is_reset:
-			is_reset = true
+		_on_attack_pressed()
+	elif event.is_action_pressed("Rotate") and battleState == BATTLE_STATE.BASE and turnManager.turn == TurnManager.PLAYER_TURN:
+		_on_rotate_pressed()
+	elif event.is_action_pressed("Attack") and battleState == BATTLE_STATE.ATTACK_SELECT and turnManager.turn == TurnManager.PLAYER_TURN:
+		enemy_selected.emit()
+	elif event.is_action_pressed("Skill") and battleState == BATTLE_STATE.ATTACK_SELECT and turnManager.turn == TurnManager.PLAYER_TURN:
+		increase_selected_enemy()
+	elif event.is_action_pressed("Item") and battleState == BATTLE_STATE.ATTACK_SELECT and turnManager.turn == TurnManager.PLAYER_TURN:
+		decrease_selected_enemy()
 	
+func increase_selected_enemy():
+	current_selected_enemy += 1
+	if current_selected_enemy >= len(enemy_units):
+		current_selected_enemy = 0
+	print("Current selected enemy: " + enemy_units[current_selected_enemy].name)
 
-
+func decrease_selected_enemy():
+	current_selected_enemy -= 1
+	if current_selected_enemy < 0:
+		current_selected_enemy = len(enemy_units) - 1
+	print("Current selected enemy: " + enemy_units[current_selected_enemy].name)
 	
 func print_current_status():
 	if playerBGFront._get_current_unit():
@@ -129,7 +134,9 @@ func print_current_status():
 		print("Unit on BGBack: " + enemyBGBack._get_current_unit().name)
 
 func _on_player_turn_started():
-	print("player turn")
+	print("=====player turn=========")
+	print(current_unit)
+	print("Press D to attack, A to rotate, W for Skill, S for item.")
 	battleState = BATTLE_STATE.BASE
 	
 	
@@ -137,7 +144,7 @@ func get_user_input():
 	pass
 
 func _on_enemy_turn_started():
-	print("enemy turn")
+	print("========enemy turn=========")
 	enemy_units[0].attack_unit(player_units[0])
 	turnManager.turn = TurnManager.PLAYER_TURN
 
@@ -146,9 +153,12 @@ func _on_attack_pressed():
 	print("Player selects unit to attack")
 	for unit in enemy_units:
 		print(unit.name)
+	
+	
+	print("Current selected enemy: " + enemy_units[current_selected_enemy].name)
 	battleState = BATTLE_STATE.ATTACK_SELECT
 	await enemy_selected
-	current_unit.attack_unit(enemy_units[0])
+	current_unit.attack_unit(enemy_units[current_selected_enemy])
 	turnManager.turn = TurnManager.ENEMY_TURN
 	
 	
