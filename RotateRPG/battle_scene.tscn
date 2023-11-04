@@ -109,7 +109,7 @@ texture = ExtResource("3_12gtb")
 
 [node name="PlayerUnits" type="Node" parent="."]
 
-[node name="Player" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
+[node name="Sanazaki" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
 position = Vector2(399, 307)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
@@ -120,12 +120,12 @@ defense = 6
 speed = 8
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Player"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Sanazaki"]
 texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("5_k571d")
 
-[node name="Player2" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
+[node name="Leo" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
 position = Vector2(266, 215)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("3_4jtox")
@@ -136,7 +136,7 @@ defense = 5
 speed = 5
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Player2"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Leo"]
 texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("6_8yjee")

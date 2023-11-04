@@ -11,6 +11,7 @@ var currentBattleGround : set = _set_BG, get = _get_BG
 
 
 
+
 func move_towards(target_pos):
 	var tween  = create_tween()
 	tween.tween_property(self, "position", target_pos, 1)
@@ -29,7 +30,7 @@ func _set_health(_health):
 func _get_health():
 	return current_health
 
-func get_speed():
+func _get_speed():
 	return speed
 	
 func _set_BG(BG):
@@ -37,3 +38,10 @@ func _set_BG(BG):
 	
 func _get_BG():
 	return currentBattleGround
+	
+func get_turn_order_speed(action_weight):
+	var turn_order_speed = speed - action_weight
+	if turn_order_speed < 0:
+		turn_order_speed = 0
+	return turn_order_speed
+	

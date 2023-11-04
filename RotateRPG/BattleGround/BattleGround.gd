@@ -7,7 +7,9 @@ func _set_current_unit(unit):
 	#set_current_unit_position()
 	
 func _get_current_unit():
+	
 	return currentUnit
+	
 
 func set_current_unit_position():
 	currentUnit.position = global_position
