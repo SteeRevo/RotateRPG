@@ -1,13 +1,9 @@
-extends Control
-
-
-@onready var selector = $Selector
+extends "res://Unit.gd"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#selector._set_option(rotate)
-	pass
+	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

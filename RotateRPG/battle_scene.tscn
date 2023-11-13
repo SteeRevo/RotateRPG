@@ -1,23 +1,121 @@
-[gd_scene load_steps=10 format=3 uid="uid://bx3skhrvmrlan"]
+[gd_scene load_steps=18 format=3 uid="uid://bx3skhrvmrlan"]
 
 [ext_resource type="Script" path="res://battle_scene.gd" id="1_orsv8"]
 [ext_resource type="Script" path="res://BattleGround/BattleGround.gd" id="2_ojhbn"]
+[ext_resource type="Texture2D" uid="uid://biul0hootc11i" path="res://city_background.png" id="2_ywj21"]
 [ext_resource type="Script" path="res://Unit.gd" id="3_4jtox"]
 [ext_resource type="Texture2D" uid="uid://cx2c44505uroh" path="res://BattleGround/BattleGround_sprite.png" id="3_12gtb"]
+[ext_resource type="Script" path="res://Sanazaki_Battle/Sanazaki_Battle.gd" id="4_1ogii"]
 [ext_resource type="Texture2D" uid="uid://dkhk6udast3f4" path="res://Sanazaki_Battle/Sanazaki_sprite.png" id="5_k571d"]
+[ext_resource type="Texture2D" uid="uid://3obqulyhjntf" path="res://Sanazaki_Battle/Sanazaki_sprite_attack.png" id="5_otos6"]
 [ext_resource type="Texture2D" uid="uid://bqb6cugqwr4bu" path="res://Leo_battle/Leo_Sprite.png" id="6_8yjee"]
 [ext_resource type="Script" path="res://BattleUI.gd" id="7_i3a86"]
 [ext_resource type="Texture2D" uid="uid://ld7gi6wo7a3d" path="res://icon.svg" id="8_7d4j3"]
 [ext_resource type="Script" path="res://Selector.gd" id="9_80aju"]
+[ext_resource type="Texture2D" uid="uid://biqipo8vigjml" path="res://Punk_sprite.png" id="10_v6ev2"]
+
+[sub_resource type="Animation" id="Animation_8l60f"]
+resource_name = "Attack"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_otos6")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -25), Vector2(89.3334, -18.6667)]
+}
+
+[sub_resource type="Animation" id="Animation_6lf6f"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -17.333)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_k571d")]
+}
+
+[sub_resource type="Animation" id="Animation_oje8n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_otos6")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -25)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3brse"]
+_data = {
+"Attack": SubResource("Animation_8l60f"),
+"Idle": SubResource("Animation_6lf6f"),
+"RESET": SubResource("Animation_oje8n")
+}
 
 [node name="BattleScene" type="Node2D"]
 script = ExtResource("1_orsv8")
+
+[node name="Justin-r-background1a1" type="Sprite2D" parent="."]
+position = Vector2(593, 323)
+scale = Vector2(1.03224, 0.899175)
+texture = ExtResource("2_ywj21")
 
 [node name="BattleGroundSet" type="Node2D" parent="."]
 position = Vector2(248, 302)
 
 [node name="BattleGround" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(159, 7)
+position = Vector2(167, 92)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -28,7 +126,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround2" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(17, -85)
+position = Vector2(13, -18)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -39,7 +137,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround3" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(13, 110)
+position = Vector2(9, 202)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -50,7 +148,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround4" type="Node2D" parent="BattleGroundSet"]
-position = Vector2(-141, 2)
+position = Vector2(-141, 76)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -64,7 +162,7 @@ texture = ExtResource("3_12gtb")
 position = Vector2(889, 307)
 
 [node name="BattleGround1" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(-141, 2)
+position = Vector2(-141, 85)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -75,7 +173,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround2" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(17, -85)
+position = Vector2(34, 5)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -86,7 +184,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround3" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(13, 110)
+position = Vector2(15, 202)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -97,7 +195,7 @@ position = Vector2(0, -2)
 texture = ExtResource("3_12gtb")
 
 [node name="BattleGround4" type="Node2D" parent="BattleGroundSet2"]
-position = Vector2(159, 7)
+position = Vector2(170, 88)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("2_ojhbn")
 metadata/_edit_group_ = true
@@ -110,30 +208,34 @@ texture = ExtResource("3_12gtb")
 [node name="PlayerUnits" type="Node" parent="."]
 
 [node name="Sanazaki" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
-position = Vector2(399, 307)
-scale = Vector2(0.75, 0.75)
-script = ExtResource("3_4jtox")
+position = Vector2(412, 388)
+script = ExtResource("4_1ogii")
 max_health = 15
 current_health = 15
-attack = 7
-defense = 6
-speed = 8
+attack = 8
+defense = 3
+speed = 10
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Sanazaki"]
 texture_filter = 1
 position = Vector2(0, -25)
-texture = ExtResource("5_k571d")
+texture = ExtResource("5_otos6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerUnits/Sanazaki"]
+libraries = {
+"": SubResource("AnimationLibrary_3brse")
+}
 
 [node name="Leo" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
-position = Vector2(266, 215)
-scale = Vector2(0.75, 0.75)
+position = Vector2(262, 279)
 script = ExtResource("3_4jtox")
 max_health = 15
 current_health = 15
 attack = 5
 defense = 5
 speed = 5
+startingBG = 1
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Leo"]
@@ -141,15 +243,32 @@ texture_filter = 1
 position = Vector2(0, -25)
 texture = ExtResource("6_8yjee")
 
+[node name="Punk" type="Node2D" parent="PlayerUnits" groups=["player_unit"]]
+position = Vector2(258, 500)
+script = ExtResource("3_4jtox")
+max_health = 20
+current_health = 20
+attack = 13
+defense = 4
+speed = 2
+startingBG = 2
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUnits/Punk"]
+texture_filter = 1
+position = Vector2(0, -25)
+texture = ExtResource("10_v6ev2")
+
 [node name="EnemyUnits" type="Node" parent="."]
 
 [node name="Enemy" type="Node2D" parent="EnemyUnits" groups=["enemy_unit"]]
-position = Vector2(753, 239)
-scale = Vector2(0.75, 0.75)
+position = Vector2(746, 382)
 script = ExtResource("3_4jtox")
 max_health = 10
 current_health = 10
 attack = 5
+speed = 7
+startingBG = 4
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="EnemyUnits/Enemy"]
@@ -159,12 +278,13 @@ texture = ExtResource("5_k571d")
 flip_h = true
 
 [node name="Enemy2" type="Node2D" parent="EnemyUnits" groups=["enemy_unit"]]
-position = Vector2(910, 202)
-scale = Vector2(0.75, 0.75)
+position = Vector2(929, 308)
 script = ExtResource("3_4jtox")
 max_health = 10
 current_health = 10
 attack = 5
+speed = 2
+startingBG = 5
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="EnemyUnits/Enemy2"]
@@ -180,35 +300,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("7_i3a86")
 
-[node name="Rotate" type="Button" parent="BattleUI"]
-layout_mode = 2
-offset_left = 182.0
-offset_top = 289.0
-offset_right = 325.0
-offset_bottom = 320.0
-text = "Rotate"
-
-[node name="Skill" type="Button" parent="BattleUI"]
-layout_mode = 2
-offset_left = 349.0
-offset_top = 215.0
-offset_right = 494.0
-offset_bottom = 246.0
-text = "Skill"
-
-[node name="Attack" type="Button" parent="BattleUI"]
-layout_mode = 2
-offset_left = 504.0
-offset_top = 288.0
-offset_right = 647.0
-offset_bottom = 320.0
-text = "Attack"
-
 [node name="Selector" type="Sprite2D" parent="BattleUI"]
-position = Vector2(482, 305)
+position = Vector2(510, 367)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("8_7d4j3")
 script = ExtResource("9_80aju")
 
-[connection signal="pressed" from="BattleUI/Rotate" to="." method="_on_rotate_pressed"]
-[connection signal="pressed" from="BattleUI/Attack" to="." method="_on_attack_pressed"]
+[connection signal="animation_finished" from="PlayerUnits/Sanazaki/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
